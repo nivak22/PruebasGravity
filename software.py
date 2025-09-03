@@ -141,11 +141,13 @@ def mostrar_dashboard(df):
         total_dinero=('Total Value', 'sum'),
         total_unidades=('Quantity_SKU', 'sum')
     ).reset_index()
+    
+    ventas_por_mes['Fecha_Formato'] = ventas_por_mes['Creation Date'].dt.strftime('%Y-%m')
 
     fig_mes = go.Figure()
-    fig_mes.add_trace(go.Bar(x=ventas_por_mes['Creation Date'], y=ventas_por_mes['total_dinero'],
-                            name='Ventas (Dinero)', yaxis='y1'))
-    fig_mes.add_trace(go.Scatter(x=ventas_por_mes['Creation Date'], y=ventas_por_mes['total_unidades'],
+    fig_mes.add_trace(go.Scatter(x=ventas_por_mes['Fecha_Formato'], y=ventas_por_mes['total_dinero'],
+                                mode='lines+markers', name='Ventas (Dinero)'))
+    fig_mes.add_trace(go.Scatter(x=ventas_por_mes['Fecha_Formato'], y=ventas_por_mes['total_unidades'],
                                 mode='lines+markers', name='Ventas (Unidades)', yaxis='y2'))
     
     fig_mes.update_layout(
@@ -189,7 +191,7 @@ def mostrar_dashboard(df):
     # Pregunta 4: ¿cuántas órdenes únicas tenemos en el año?
     st.subheader("4. Órdenes Únicas")
     st.markdown("### ¿Cuántas órdenes únicas tenemos en el año?")
-    st.info(f"**Respuesta:** El número de órdenes únicas en el período seleccionado es de **{total_ordenes}**.")
+    st.info(f"**Respuesta:** El número de órdenes únicas en el período seleccionado es de **{filtered_df['Order'].nunique()}**.")
     
     st.markdown("---")
 
